@@ -438,3 +438,52 @@ ENTRYPOINT ["dockerd-entrypoint.sh"]
 
 #=======================End of layer: aarch64_v2  =================
 
+# ### firehawk
+
+# RUN   pyenv global  $PYTHON_38_VERSION
+# RUN python3.8 -m pip install --upgrade pip \
+#     && curl -qL -o packer.zip https://releases.hashicorp.com/packer/1.7.8/packer_1.7.8_linux_amd64.zip && unzip packer.zip \
+#     && ./packer version \
+#     && python3.8 -m pip install --user ansible boto3 botocore \
+#     && /root/.local/bin/ansible --version \
+#     && export PATH=$PATH:/root/.local/bin \
+#     && ansible --version
+
+# ### install packages and fix yum update issues
+# RUN yum install -y yum-utils \
+#     && yum remove -y libuv-1.39.0-1.amzn2.x86_64 \
+#     && yum clean all \
+#     && rm -rf /var/cache/yum \
+#     && yum update -y
+
+# RUN yum install -y sudo python python3.7 python3-pip jq
+
+# # Get terraform
+# RUN wget https://releases.hashicorp.com/terraform/0.13.7/terraform_0.13.7_linux_amd64.zip -P /tmp/ --quiet \
+#     && unzip /tmp/terraform_0.13.7_linux_amd64.zip -d /tmp/ \
+#     && mv /tmp/terraform /usr/local/bin/.
+
+# # Get Packer
+# RUN wget https://releases.hashicorp.com/packer/1.7.2/packer_1.7.2_linux_amd64.zip -P /tmp/ --quiet \
+#     && unzip /tmp/packer_1.7.2_linux_amd64.zip -d /tmp/ \
+#     && mv /tmp/packer /usr/local/bin/.
+
+# # Get Terragrunt
+# RUN wget https://github.com/gruntwork-io/terragrunt/releases/download/v0.30.3/terragrunt_linux_386 -P /tmp/ --quiet \
+#     && mv /tmp/terragrunt_linux_386 /usr/local/bin/terragrunt \
+#     && chmod +x /usr/local/bin/terragrunt
+
+# # Install consul and dnsmasq
+# RUN git clone --branch "pull-request-241" https://github.com/queglay/terraform-aws-consul.git /tmp/terraform-aws-consul
+
+# RUN /tmp/terraform-aws-consul/modules/install-consul/install-consul --version "1.9.2" --skip-package-update
+
+# # consider removing this 
+# RUN yum install dhclient -y 
+
+# RUN /tmp/terraform-aws-consul/modules/install-dnsmasq/install-dnsmasq --skip-package-update
+
+# RUN systemctl enable dnsmasq
+
+# # RUN service dnsmasq restart
+
