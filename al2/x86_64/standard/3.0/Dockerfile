@@ -534,5 +534,7 @@ RUN /tmp/terraform-aws-consul/modules/install-dnsmasq/install-dnsmasq
 
 # RUN systemctl enable dnsmasq
 
-RUN service dnsmasq restart
+# RUN service dnsmasq restart
+
+RUN /etc/init.d/dnsmasq restart
 
