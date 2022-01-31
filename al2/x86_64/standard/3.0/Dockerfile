@@ -521,20 +521,20 @@ RUN wget https://github.com/gruntwork-io/terragrunt/releases/download/v0.30.3/te
 
 # RUN /tmp/terraform-aws-consul/modules/install-consul/install-consul --version "1.9.2" --skip-package-update
 
+# consider removing this 
+RUN yum install dhclient -y 
+
 RUN git clone https://github.com/hashicorp/terraform-aws-consul.git /tmp/terraform-aws-consul
 
 RUN /tmp/terraform-aws-consul/modules/install-consul/install-consul --version "1.9.2"
 
-# consider removing this 
-RUN yum install dhclient -y 
+RUN /tmp/terraform-aws-consul/modules/install-dnsmasq/install-dnsmasq
 
 # RUN /tmp/terraform-aws-consul/modules/install-dnsmasq/install-dnsmasq --skip-package-update
 
-RUN /tmp/terraform-aws-consul/modules/install-dnsmasq/install-dnsmasq
-
-# RUN systemctl enable dnsmasq
+RUN systemctl enable dnsmasq
 
 # RUN service dnsmasq restart
 
-RUN /etc/init.d/dnsmasq restart
+RUN /etc/dnsmasq restart
 
